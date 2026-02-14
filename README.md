@@ -1,4 +1,4 @@
-## Proyecto-I-Grafo-Implementacion-con-listas-de-adyacencias
+# Proyecto-I-Grafo-Implementacion-con-listas-de-adyacencias
 
 ## Integrantes:
 
@@ -13,17 +13,17 @@ Se implementó un grafo dirigido genérico en Kotlin utilizando listas de adyace
 
 ## Estructuras usadas
 
-# vertexMap<T, Int>
+### vertexMap<T, Int>
 Asocia cada vértice con un índice interno.
 → Permite búsquedas en O(1) promedio.
 
-# indexToVertex<Int, T>
+### indexToVertex<Int, T>
 Recupera el vértice desde su índice.
 
-# adj: MutableMap<Int, MutableSet<Int>>
+### adj: MutableMap<Int, MutableSet<Int>>
 Representa la lista de adyacencia.
 
-## Decisiones de Implementación
+### Decisiones de Implementación
 
 - El tamaño del grafo se obtiene con vertexMap.size para evitar inconsistencias.
 - No se permiten vértices ni arcos duplicados.
@@ -49,5 +49,6 @@ Sea:
 | **eliminarVertice** | O(V + E) | Se eliminan los arcos de salida en tiempo proporcional a su grado y luego se revisan todas las listas para borrar arcos de entrada. |
 | **tamano** | O(1) | Retorna el tamaño almacenado en la estructura sin realizar recorridos. |
 | **subgrafo** | O(V + E) | Primero se filtran los vértices solicitados y luego se recorren únicamente sus listas de adyacencia para copiar los arcos existentes dentro del subconjunto. |
+
 
 
