@@ -1,29 +1,48 @@
-# Proyecto-I-Grafo-Implementacion-con-listas-de-adyacencias
+## Proyecto-I-Grafo-Implementacion-con-listas-de-adyacencias
 
-Integrantes:
+##Integrantes:
 
 - Jean Sifontes carnet: 22-10387
 - Cristina Puyosa carnet: 23-10395
 
-## Complejidad
+## Descripción
 
-| Función             | Complejidad      | Justificación                                                                                    |
-| ------------------- | ---------------- | ------------------------------------------------------------------------------------------------ |
-| agregarVertice      | O(1)             | Las operaciones de los Hashmaps en promedio toman tiempo constante                               |
-| contiene            | O(1)             | Acceso directo por uso de Hashmaps                                                               |
-| conectar            | O(1)             | Las operaciones de añadir y consultar de los Hashmaps en promedio toman tiempo constante         |
-| obtenerArcosSalida  | O(k)             | k = # de sucesores (Debemos recorrer la lista de vértices adyacente a un vértice v)              |
-| obtenerArcosEntrada | O(\|V\|)         | Debemos iterar sobre cada vértice                                                                |
-| eliminarVertice     | O(\|V\|)         | Debemos recorrer vértices vecinos para eliminar la conexión que existía con el vértice eliminado |
-| tamanio             | O(1)             |                                                                                                  |
-| subGrafo            | O(\|V\| + \|E\|) | Debemos recorrer el grafo.                                                                       |
+Se implementó un grafo dirigido genérico en Kotlin utilizando listas de adyacencia, estructura que almacena para cada vértice el conjunto de sus vecinos.
 
-### Implementación:
+## Estructuras usadas
 
-Se utilizó listas doblementes enlazadas para facilitar acciones como la eliminación de nodos, además utilizamos colecciones nativas de Kotlin MutableMap, MutableList para la implementación. Se crearon 3 archivos diferentes:
+# vertexMap<T, Int>
+Asocia cada vértice con un índice interno.
+→ Permite búsquedas en O(1) promedio.
 
-1.\_ NodoVer.kt: Es la clase utilizada para representar los nodos de la lista doblemente enlazada contiene los apuntadores para el nodo anterior y siguiente, la información del vértice y la lista de lados.
+# indexToVertex<Int, T>
+Recupera el vértice desde su índice.
 
-2.\_Vertices.kt: Es la clase utilizada para representar el nodo, contiene el valor y el id del vértice
+# adj: MutableMap<Int, MutableSet<Int>>
+Representa la lista de adyacencia.
 
-3.\_ ListaAdyacenciaGrafo.kt: Es la clase donde se implementó el grafo utilizando la representación de lista de adyacencia. Utilizamos Hashmaps para hacer las operaciones más óptimas
+## Decisiones de Implementación
+
+- El tamaño del grafo se obtiene con vertexMap.size para evitar inconsistencias.
+- No se permiten vértices ni arcos duplicados.
+- Al eliminar un vértice se reconstruyen los índices para mantener la estructura compacta.
+
+## Complejidad de los Métodos
+
+Sea:
+
+- **V** = número de vértices del grafo  
+- **E** = número de arcos  
+- **k** = grado (cantidad de vecinos) de un vértice  
+
+| Método | Orden | Justificación |
+|--------|--------|---------------|
+| **agregarVertice** | O(1) promedio | Insertar en el `HashMap`, agregar al `MutableList` y crear una lista de adyacencia son operaciones constantes sin recorridos. |
+| **conectar** | O(1) promedio | Se buscan ambos vértices en la tabla hash y se inserta el destino en un `MutableSet`, cuya inserción es constante en promedio. |
+| **contiene** | O(1) | La verificación se realiza directamente sobre el `HashMap`. |
+| **obtenerArcosSalida** | O(k) | Solo se recorre la lista de adyacencia del vértice, cuyo tamaño es su grado. No depende del tamaño total del grafo. |
+| **obtenerArcosEntrada** | O(V + E) | Es necesario inspeccionar todas las listas de adyacencia para determinar qué vértices apuntan al vértice objetivo. En el peor caso se recorren todos los arcos. |
+| **eliminarVertice** | O(V + E) | Se eliminan los arcos de salida en tiempo proporcional a su grado y luego se revisan todas las listas para borrar arcos de entrada. |
+| **tamano** | O(1) | Retorna el tamaño almacenado en la estructura sin realizar recorridos. |
+| **subgrafo** | O(V + E) | Primero se filtran los vértices solicitados y luego se recorren únicamente sus listas de adyacencia para copiar los arcos existentes dentro del subconjunto. |
+
